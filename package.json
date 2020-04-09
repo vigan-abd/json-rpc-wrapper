@@ -4,7 +4,8 @@
   "description": "A simple json rpc 2.0 wrapper for any object",
   "main": "index.js",
   "scripts": {
-    "test": "echo 'tests to be implemented yet'"
+    "test": "npm run unit",
+    "unit": "NODE_ENV=test ./node_modules/.bin/mocha ./test/index.test.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,10 @@
   "bugs": {
     "url": "https://github.com/vigan-abd/json-rpc-wrapper/issues"
   },
-  "homepage": "https://github.com/vigan-abd/json-rpc-wrapper#readme"
+  "homepage": "https://github.com/vigan-abd/json-rpc-wrapper#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "dirty-chai": "^2.0.1",
+    "mocha": "^7.1.1"
+  }
 }

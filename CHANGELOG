@@ -1,2 +1,6 @@
+# 0.5.0
+- fixes: fixed default error params, restricted code param
+- tests: added tests for RpcError class
+
 # 0.1.0
 - features: rpc wrapper functionality for any object/class

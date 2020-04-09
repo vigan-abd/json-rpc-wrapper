@@ -18,6 +18,14 @@ class RpcError extends Error {
 
     this.code = code
     this.data = data
+
+    //[-32603, -32600], 
+    //-32700
+    //[-32099, -32000]
+    if (!(this.code >= INTERNAL_ERROR && this.code <= INVALID_REQUEST) && this.code !== PARSE_ERROR &&
+      !(this.code >= -32099 && this.code <= SERVER_ERROR)) {
+      this.code = SERVER_ERROR
+    }
   }
 
   toString () {
@@ -25,9 +33,11 @@ class RpcError extends Error {
   }
 
   toJSON () {
-    const json = { code: this.code, message: this.message }
-    if (this.data) json.data = this.data
-    return json
+    return {
+      code: this.code,
+      message: this.message,
+      data: this.data || null
+    }
   }
 
   /**
@@ -43,7 +53,7 @@ class RpcError extends Error {
       case INVALID_PARAMS: return new RpcError(INVALID_PARAMS, message || 'Invalid params', data)
       case INTERNAL_ERROR: return new RpcError(INTERNAL_ERROR, message || 'Internal error', data)
       case SERVER_ERROR: return new RpcError(SERVER_ERROR, message || 'Server error', data)
-      default: return new Error(code, message, data)
+      default: return new RpcError(code, message || 'Server error', data)
     }
   }
 }
