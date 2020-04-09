@@ -25,6 +25,7 @@
   "homepage": "https://github.com/vigan-abd/json-rpc-wrapper#readme",
   "devDependencies": {
     "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "dirty-chai": "^2.0.1",
     "mocha": "^7.1.1"
   }
