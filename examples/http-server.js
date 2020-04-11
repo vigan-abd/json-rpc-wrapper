@@ -26,7 +26,7 @@ const server = http.createServer((req, res) => {
     return res.end()
   }
   if (req.url.replace(/\/$/, '') !== '/rpc') {
-    res.writable(403, 'Forbidden')
+    res.writeHead(403, 'Forbidden')
     return res.end()
   }
 
@@ -38,6 +38,12 @@ const server = http.createServer((req, res) => {
   req.on('end', async () => {
     const payload = chunks.join('')
     const rpcRes = await rpcProxy.callReq(payload)
+
+    if (!rpcRes || (Array.isArray(rpcRes) && rpcRes.length === 0)) {
+      res.writeHead(204, 'No Content')
+      res.end()
+      return
+    }
 
     res.setHeader('Content-Type', 'application/json')
     res.write(JSON.stringify(rpcRes))

@@ -61,7 +61,7 @@ const server = http.createServer((req, res) => {
     return res.end()
   }
   if (req.url.replace(/\/$/, '') !== '/rpc') {
-    res.writable(403, 'Forbidden')
+    res.writeHead(403, 'Forbidden')
     return res.end()
   }
 
@@ -73,6 +73,12 @@ const server = http.createServer((req, res) => {
   req.on('end', async () => {
     const payload = chunks.join('')
     const rpcRes = await rpcProxy.callReq(payload)
+
+    if (!rpcRes || (Array.isArray(rpcRes) && rpcRes.length === 0)) {
+      res.writeHead(204, 'No Content')
+      res.end()
+      return
+    }
 
     res.setHeader('Content-Type', 'application/json')
     res.write(JSON.stringify(rpcRes))
@@ -100,8 +106,8 @@ curl -X POST \
 
 Response example:
 [
-  { "jsonrpc": "2.0", "id": "1", "res": null },
-  { "jsonrpc": "2.0", "id": "2", "res": null },
+  { "jsonrpc": "2.0", "id": "1", "result": null },
+  { "jsonrpc": "2.0", "id": "2", "result": null },
   { "jsonrpc": "2.0", "id": "3", "result": { "id": 1, "name": "Product 1" } },
   { "jsonrpc": "2.0", "id": 4, "error": { "code": -32602, "message": "Invalid params" } }
 ]

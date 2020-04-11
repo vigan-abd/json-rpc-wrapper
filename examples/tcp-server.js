@@ -32,6 +32,10 @@ server.on('connection', (socket) => {
     const raw = data.toString('utf-8')
 
     rpcProxy.callReq(raw).then(res => {
+      if (!res || (Array.isArray(res) && res.length === 0)) {
+        socket.end()
+        return
+      }
       socket.write(JSON.stringify(res), () => socket.end())
     })
   })

@@ -34,7 +34,7 @@ const server = http.createServer((req, res) => {
 
   const reqUrl = req.url.replace(/\/$/, '')
   if (!['/rpc1', '/rpc2'].includes(reqUrl)) {
-    res.writable(403, 'Forbidden')
+    res.writeHead(403, 'Forbidden')
     return res.end()
   }
 
@@ -50,6 +50,12 @@ const server = http.createServer((req, res) => {
       rpcRes = await proxy1.callReq(payload)
     } else {
       rpcRes = await proxy2.callReq(payload)
+    }
+
+    if (!rpcRes || (Array.isArray(rpcRes) && rpcRes.length === 0)) {
+      res.writeHead(204, 'No Content')
+      res.end()
+      return
     }
 
     res.setHeader('Content-Type', 'application/json')
