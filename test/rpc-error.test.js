@@ -36,7 +36,7 @@ module.exports = () => {
       expect(json.data).to.be.eql({ foo: 'bar' })
     })
 
-    it('toJSON - it should use null in case when data doesn\'t exist', () => {
+    it('toJSON - it shouldn\'t include data in case when it doesn\'t exist', () => {
       const error = new RpcError(RpcError.INVALID_PARAMS, 'test')
       const json = error.toJSON()
       expect(
@@ -44,7 +44,7 @@ module.exports = () => {
       ).to.be.true()
       expect(json.code).to.be.equal(RpcError.INVALID_PARAMS)
       expect(json.message).to.be.equal('test')
-      expect(json.data).to.be.null()
+      expect(json.data).to.be.undefined()
     })
 
     it('JSON.stringify - it should return json format expected by protocol', () => {
@@ -69,12 +69,12 @@ module.exports = () => {
       const err1 = RpcError.createError(-32098)
       expect(err1.code).to.be.equal(-32098)
       expect(err1.message).to.be.equal('Server error')
-      expect(err1.data).to.be.null()
+      expect(err1.data).to.be.undefined()
 
       const err2 = RpcError.createError(-32098)
       expect(err2.code).to.be.equal(-32098)
       expect(err2.message).to.be.equal('Server error')
-      expect(err2.data).to.be.null()
+      expect(err2.data).to.be.undefined()
     })
   })
 }

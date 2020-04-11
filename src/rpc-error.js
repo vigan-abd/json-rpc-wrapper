@@ -7,21 +7,23 @@ const INVALID_PARAMS = -32602
 const INTERNAL_ERROR = -32603
 const SERVER_ERROR = -32000
 
+const utils = require('./utils')
+
 class RpcError extends Error {
   /**
    * @param {number} code
    * @param {string} message
-   * @param {*} data
+   * @param {*} [data]
    */
   constructor (code, message, data = null) {
     super(message)
 
     this.code = code
-    this.data = data
+    if (!utils.isNil(data)) this.data = data
 
-    //[-32603, -32600], 
-    //-32700
-    //[-32099, -32000]
+    // [-32603, -32600],
+    // -32700
+    // [-32099, -32000]
     if (!(this.code >= INTERNAL_ERROR && this.code <= INVALID_REQUEST) && this.code !== PARSE_ERROR &&
       !(this.code >= -32099 && this.code <= SERVER_ERROR)) {
       this.code = SERVER_ERROR
@@ -33,11 +35,9 @@ class RpcError extends Error {
   }
 
   toJSON () {
-    return {
-      code: this.code,
-      message: this.message,
-      data: this.data || null
-    }
+    const json = { code: this.code, message: this.message }
+    if (!utils.isNil(this.data)) json.data = this.data
+    return json
   }
 
   /**
