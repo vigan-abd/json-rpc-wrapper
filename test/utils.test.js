@@ -7,6 +7,41 @@ const utils = require('../src/utils')
 
 module.exports = () => {
   describe('# utils-tests', () => {
+    it('getObjectFunction - it should return only class methods excluding built in obj prototype methods', () => {
+      const obj = new class Test {
+        constructor () {
+          this.test = '333'
+          this.foo = this.hello.bind(this)
+          this.subCls = { a: '33', bar: () => { } }
+        }
+
+        hello () { }
+        world () { }
+      }()
+
+      expect(utils.getObjectFunctions(obj)).to.be.eql([
+        'foo', 'hello', 'toLocaleString', 'toString', 'valueOf', 'world'
+      ])
+    })
+
+    it('getObjectFunction - it should return only props that are methods', () => {
+      const obj = {
+        hello: () => { },
+        world: () => { },
+        test: '333',
+        bar: { add: (a, b) => a + b },
+        foo: new Promise((resolve) => resolve(true))
+      }
+
+      expect(utils.getObjectFunctions(obj)).to.be.eql([
+        'hello', 'toLocaleString', 'toString', 'valueOf', 'world'
+      ])
+    })
+
+    it('getObjectFunction - it should work with array since it\'s an object', () => {
+      expect(utils.getObjectFunctions([]).length).to.be.greaterThan(0)
+    })
+
     it('isNil - it should return true only when value is null or undefined', () => {
       let c
       expect(utils.isNil()).to.be.true()
