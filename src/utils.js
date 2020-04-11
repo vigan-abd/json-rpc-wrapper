@@ -1,4 +1,4 @@
-'use strinct'
+'use strict'
 
 const isStringOrNumber = (val) => {
   if (typeof val !== 'string' && typeof val !== 'number') {
