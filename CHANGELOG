@@ -1,6 +1,7 @@
-# 0.5.0
-- fixes: fixed default error params, restricted code param
-- tests: added tests for RpcError class
+# 0.8.0
+- fixes: fixed default error params, restricted code param, fixed issues in rpc response message, bug fixes in rpc service class
+- tests: added unit tests for all classes in src
+- features: made utils exportable, added getObjectFunctions method
 
 # 0.1.0
 - features: rpc wrapper functionality for any object/class
