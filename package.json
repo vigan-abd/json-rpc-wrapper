@@ -4,7 +4,9 @@
   "description": "A simple json rpc 2.0 wrapper for any object",
   "main": "index.js",
   "scripts": {
-    "test": "npm run unit",
+    "format": "./node_modules/.bin/standard --fix",
+    "lint": "./node_modules/.bin/standard",
+    "test": "npm run lint && npm run unit",
     "unit": "NODE_ENV=test ./node_modules/.bin/mocha ./test/index.test.js"
   },
   "repository": {
@@ -27,6 +29,17 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "dirty-chai": "^2.0.1",
-    "mocha": "^7.1.1"
+    "mocha": "^7.1.1",
+    "standard": "^14.3.3"
+  },
+  "standard": {
+    "globals": [
+      "it",
+      "describe",
+      "before",
+      "after",
+      "beforeEach",
+      "afterEach"
+    ]
   }
 }
