@@ -29,6 +29,7 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "dirty-chai": "^2.0.1",
+    "husky": "^4.2.5",
     "mocha": "^7.1.1",
     "standard": "^14.3.3"
   },
@@ -41,5 +42,11 @@
       "beforeEach",
       "afterEach"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run test"
+    }
   }
 }
