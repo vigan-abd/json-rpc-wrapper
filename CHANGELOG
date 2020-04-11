@@ -1,3 +1,8 @@
+# 0.9.0
+- fixes: typo fix in 'use strict' directive
+- features: travis builds and lgtm verifications added
+- docs: usage docs updated, jsdocs for classes written
+
 # 0.8.0
 - fixes: fixed default error params, restricted code param, fixed issues in rpc response message, bug fixes in rpc service class
 - tests: added unit tests for all classes in src
