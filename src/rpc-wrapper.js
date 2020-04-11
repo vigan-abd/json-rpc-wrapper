@@ -12,6 +12,11 @@ class RpcWrapper {
    * @param {Array<string>} cbMethods
    */
   constructor (service, cbMethods = []) {
+    if (!service) throw new Error('ERR_SERVICE_REQUIRED')
+    if (typeof service !== 'object') {
+      throw new Error('ERR_SERVICE_NOT_OBJECT')
+    }
+
     if (service instanceof RpcServiceBase) {
       this.service = service
     } else {
@@ -35,12 +40,12 @@ class RpcWrapper {
     let res = null
     if (Array.isArray(req)) {
       res = await Promise.all(req.map(r => this._procReq(r)))
-      res = res.filter(req => !utils.isNil(req))
+      res = res.filter(r => !utils.isNil(r))
       if (res.length > 0) return res
+    } else {
+      res = await this._procReq(req)
+      if (!utils.isNil(res)) return res
     }
-
-    res = await this._procReq(req)
-    if (!utils.isNil(res)) return res
   }
 
   /**
@@ -111,12 +116,12 @@ class RpcWrapper {
    */
   _createRes (id, err, res) {
     const json = {
-      jsonrpc: '2.0',
-      id: utils.isStringOrNumber(id) ? id : null
+      jsonrpc: '2.0'
     }
-    if (err) json.error = err
-    if (res) json.result = res
-    if (!err && !res) json.result = null
+    if (!utils.isNil(err)) json.error = err
+    else if (!utils.isNil(res)) json.result = res
+    else json.result = null
+    json.id = utils.isStringOrNumber(id) ? id : null
 
     return json
   }
