@@ -16,7 +16,7 @@ class RpcServiceBase {
    * @param {string} method
    */
   async validateMethod (method) {
-    if (!this.methods.includes(method)) {
+    if (!this.methods.includes(method) || typeof this[method] !== 'function') {
       throw RpcError.createError(RpcError.METHOD_NOT_FOUND)
     }
   }

@@ -4,23 +4,25 @@ const { expect } = require('chai')
   .use(require('chai-as-promised'))
   .use(require('dirty-chai'))
 
-const RpcServiceBase = require('../src/rpc-service-base')
 const RpcError = require('../src/rpc-error')
+const RpcServiceBase = require('../src/rpc-service-base')
 
 module.exports = () => {
   describe('# rpc-service-base-tests', () => {
     class RpcService extends RpcServiceBase {
       constructor () {
         super()
-        this.methods.push('valid_method')
+        this.methods.push('validMethod', 'method2')
       }
 
       areParamsValid (method, params) {
         switch (method) {
-          case 'valid_method': return params[0] === 'valid_params'
+          case 'validMethod': return params[0] === 'valid_params'
           default: return false
         }
       }
+
+      validMethod () { } //
     }
 
     it('constructor - the class can be instanciated', () => {
@@ -40,7 +42,7 @@ module.exports = () => {
         expect(err).to.be.instanceof(RpcError)
         expect(err.code).to.be.equal(RpcError.METHOD_NOT_FOUND)
         expect(err.message).to.be.equal('Method not found')
-        expect(err.data).to.be.null()
+        expect(err.data).to.be.undefined()
       }
     })
 
@@ -74,34 +76,49 @@ module.exports = () => {
 
     it('extended.validateMethod - should be fulfilled in case of valid method', () => {
       return expect(
-        new RpcService().validateMethod('valid_method')
+        new RpcService().validateMethod('validMethod')
       ).to.be.fulfilled()
     })
 
     it('extended.validateMethod - should be rejected in case of invalid method', async () => {
       expect(
-        new RpcService().validateMethod('invalid_method')
+        new RpcService().validateMethod('invalidMethod')
       ).to.be.rejectedWith(RpcError)
 
       try {
-        await new RpcService().validateMethod('invalid_method')
+        await new RpcService().validateMethod('invalidMethod')
       } catch (err) {
         expect(err).to.be.instanceof(RpcError)
         expect(err.code).to.be.equal(RpcError.METHOD_NOT_FOUND)
         expect(err.message).to.be.equal('Method not found')
-        expect(err.data).to.be.null()
+        expect(err.data).to.be.undefined()
+      }
+    })
+
+    it('extended.validateMethod - should be rejected in case of invalid method type even if it\'s added in methods array', async () => {
+      expect(
+        new RpcService().validateMethod('method2')
+      ).to.be.rejectedWith(RpcError)
+
+      try {
+        await new RpcService().validateMethod('method2')
+      } catch (err) {
+        expect(err).to.be.instanceof(RpcError)
+        expect(err.code).to.be.equal(RpcError.METHOD_NOT_FOUND)
+        expect(err.message).to.be.equal('Method not found')
+        expect(err.data).to.be.undefined()
       }
     })
 
     it('extended.validateParams - should be fulfilled in case of valid method', () => {
       return expect(
-        new RpcService().validateParams('valid_method', ['valid_params'])
+        new RpcService().validateParams('validMethod', ['valid_params'])
       ).to.be.fulfilled()
     })
 
     it('extended.validateParams - should be rejected in case of invalid method', async () => {
       expect(
-        new RpcService().validateParams('valid_method', { invalid_params: true })
+        new RpcService().validateParams('validMethod', { invalid_params: true })
       ).to.be.rejectedWith(RpcError)
 
       try {
@@ -110,22 +127,22 @@ module.exports = () => {
         expect(err).to.be.instanceof(RpcError)
         expect(err.code).to.be.equal(RpcError.INVALID_PARAMS)
         expect(err.message).to.be.equal('Invalid params')
-        expect(err.data).to.be.null()
+        expect(err.data).to.be.undefined()
       }
     })
 
     it('extended.areParamsValid - should return true in case of valid params', async () => {
-      const res = await new RpcService().areParamsValid('valid_method', ['valid_params'])
+      const res = await new RpcService().areParamsValid('validMethod', ['valid_params'])
       expect(res).to.be.true()
     })
 
     it('extended.areParamsValid - should return false in case of invalid params', async () => {
-      const res = new RpcService().areParamsValid('valid_method', ['invalid_params'])
+      const res = new RpcService().areParamsValid('validMethod', ['invalid_params'])
       expect(res).to.be.false()
     })
 
     it('extended.areParamsValid - should return false in case of invalid method', async () => {
-      const res = new RpcService().areParamsValid('invalid_method', ['valid_params'])
+      const res = new RpcService().areParamsValid('invalidMethod', ['valid_params'])
       expect(res).to.be.false()
     })
   })
