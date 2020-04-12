@@ -1,7 +1,7 @@
 'use strict'
 
-const RpcError = require('./rpc-error')
-const RpcServiceBase = require('./rpc-service-base')
+const { RpcError } = require('./rpc-error')
+const { RpcServiceBase } = require('./rpc-service-base')
 const utils = require('./utils')
 const { promisify } = require('util')
 
@@ -101,7 +101,7 @@ class RpcWrapper {
    * @public
    * @param {string} payload - JSON payload that is received through transport layer,
    *    e.g. {"jsonrpc": "2.0", "method": "sum", "params": [1,2,4], "id": "1"}
-   * @returns {JsonRpcResponse|Array<JsonRpcResponse>|void} e.g. {"jsonrpc": "2.0", "result": 7, "id": "1"}
+   * @returns {Promise<JsonRpcResponse|Array<JsonRpcResponse>|void>} e.g. {"jsonrpc": "2.0", "result": 7, "id": "1"}
    */
   async callReq (payload) {
     let req = null
@@ -127,7 +127,7 @@ class RpcWrapper {
    * and in case of id param returns the response.
    * @protected
    * @param {JsonRpcRequest} req - Request object received through the proxy call
-   * @returns {JsonRpcResponse|void} e.g. {"jsonrpc": "2.0", "result": 7, "id": "1"}
+   * @returns {Promise<JsonRpcResponse|void>} e.g. {"jsonrpc": "2.0", "result": 7, "id": "1"}
    */
   async _procReq (req) {
     if (!(typeof req === 'object' && !Array.isArray(req))) {
@@ -211,4 +211,4 @@ class RpcWrapper {
   }
 }
 
-module.exports = RpcWrapper
+module.exports = { RpcWrapper }
