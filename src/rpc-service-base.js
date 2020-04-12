@@ -1,6 +1,6 @@
 'use strict'
 
-const RpcError = require('./rpc-error')
+const { RpcError } = require('./rpc-error')
 
 /**
  * Represents the base class from which rpc callable classes can be extended.
@@ -42,6 +42,7 @@ const RpcError = require('./rpc-error')
 class RpcServiceBase {
   constructor () {
     /**
+     * @protected
      * @property {Array<string>} methods - Represents the list of methods that are exposed through rpc calls,
      *    each method here should be implemented with the same name
      */
@@ -80,7 +81,6 @@ class RpcServiceBase {
    * The abstract that will verify if the provided params for the method are valid,
    * it should be implemented in all extended classes
    * @abstract
-   * @throws {RpcError}
    * @param {string} method - The method that will be called externally
    * @param {Object|Array<any>} params - The params that will be passed to the method
    * @returns {Promise<boolean>|boolean}
@@ -90,4 +90,4 @@ class RpcServiceBase {
   }
 }
 
-module.exports = RpcServiceBase
+module.exports = { RpcServiceBase }

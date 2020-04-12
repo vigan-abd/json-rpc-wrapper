@@ -4,8 +4,8 @@ const { expect } = require('chai')
   .use(require('chai-as-promised'))
   .use(require('dirty-chai'))
 
-const RpcError = require('../src/rpc-error')
-const RpcServiceBase = require('../src/rpc-service-base')
+const { RpcError } = require('../src/rpc-error')
+const { RpcServiceBase } = require('../src/rpc-service-base')
 
 module.exports = () => {
   describe('# rpc-service-base-tests', () => {

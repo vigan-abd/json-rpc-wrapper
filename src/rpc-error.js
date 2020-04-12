@@ -3,48 +3,6 @@
 const utils = require('./utils')
 
 /**
- * -32700
- * @memberof RpcError
- * @constant {number}
- */
-const PARSE_ERROR = -32700
-
-/**
- * -32600
- * @memberof RpcError
- * @constant {number}
- */
-const INVALID_REQUEST = -32600
-
-/**
- * -32601
- * @memberof RpcError
- * @constant {number}
- */
-const METHOD_NOT_FOUND = -32601
-
-/**
- * -32602
- * @memberof RpcError
- * @constant {number}
- */
-const INVALID_PARAMS = -32602
-
-/**
- * -32603
- * @memberof RpcError
- * @constant {number}
- */
-const INTERNAL_ERROR = -32603
-
-/**
- * -32000
- * @memberof RpcError
- * @constant {number}
- */
-const SERVER_ERROR = -32000
-
-/**
  * Represents the json rpc error base structure, it accepts 3 params: code, message, data as specified by the protocol
  * @class
  * @example
@@ -91,9 +49,10 @@ class RpcError extends Error {
     // [-32603, -32600],
     // -32700
     // [-32099, -32000]
-    if (!(this.code >= INTERNAL_ERROR && this.code <= INVALID_REQUEST) && this.code !== PARSE_ERROR &&
-      !(this.code >= -32099 && this.code <= SERVER_ERROR)) {
-      this.code = SERVER_ERROR
+    if (!(this.code >= RpcError.INTERNAL_ERROR && this.code <= RpcError.INVALID_REQUEST) &&
+      this.code !== RpcError.PARSE_ERROR &&
+      !(this.code >= -32099 && this.code <= RpcError.SERVER_ERROR)) {
+      this.code = RpcError.SERVER_ERROR
     }
   }
 
@@ -124,21 +83,57 @@ class RpcError extends Error {
    */
   static createError (code, message = null, data = null) {
     switch (code) {
-      case PARSE_ERROR: return new RpcError(PARSE_ERROR, message || 'Parse error', data)
-      case INVALID_REQUEST: return new RpcError(INVALID_REQUEST, message || 'Invalid request', data)
-      case METHOD_NOT_FOUND: return new RpcError(METHOD_NOT_FOUND, message || 'Method not found', data)
-      case INVALID_PARAMS: return new RpcError(INVALID_PARAMS, message || 'Invalid params', data)
-      case INTERNAL_ERROR: return new RpcError(INTERNAL_ERROR, message || 'Internal error', data)
-      case SERVER_ERROR: return new RpcError(SERVER_ERROR, message || 'Server error', data)
+      case RpcError.PARSE_ERROR: return new RpcError(RpcError.PARSE_ERROR, message || 'Parse error', data)
+      case RpcError.INVALID_REQUEST: return new RpcError(RpcError.INVALID_REQUEST, message || 'Invalid request', data)
+      case RpcError.METHOD_NOT_FOUND: return new RpcError(RpcError.METHOD_NOT_FOUND, message || 'Method not found', data)
+      case RpcError.INVALID_PARAMS: return new RpcError(RpcError.INVALID_PARAMS, message || 'Invalid params', data)
+      case RpcError.INTERNAL_ERROR: return new RpcError(RpcError.INTERNAL_ERROR, message || 'Internal error', data)
+      case RpcError.SERVER_ERROR: return new RpcError(RpcError.SERVER_ERROR, message || 'Server error', data)
       default: return new RpcError(code, message || 'Server error', data)
     }
   }
+
+  /**
+   * -32700
+   * @memberof RpcError
+   * @constant {number}
+   */
+  static get PARSE_ERROR () { return -32700 }
+
+  /**
+   * -32600
+   * @memberof RpcError
+   * @constant {number}
+   */
+  static get INVALID_REQUEST () { return -32600 }
+
+  /**
+   * -32601
+   * @memberof RpcError
+   * @constant {number}
+   */
+  static get METHOD_NOT_FOUND () { return -32601 }
+
+  /**
+   * -32602
+   * @memberof RpcError
+   * @constant {number}
+   */
+  static get INVALID_PARAMS () { return -32602 }
+
+  /**
+   * -32603
+   * @memberof RpcError
+   * @constant {number}
+   */
+  static get INTERNAL_ERROR () { return -32603 }
+
+  /**
+   * -32000
+   * @memberof RpcError
+   * @constant {number}
+   */
+  static get SERVER_ERROR () { return -32000 }
 }
 
-module.exports = RpcError
-module.exports.PARSE_ERROR = PARSE_ERROR
-module.exports.INVALID_REQUEST = INVALID_REQUEST
-module.exports.METHOD_NOT_FOUND = METHOD_NOT_FOUND
-module.exports.INVALID_PARAMS = INVALID_PARAMS
-module.exports.INTERNAL_ERROR = INTERNAL_ERROR
-module.exports.SERVER_ERROR = SERVER_ERROR
+module.exports = { RpcError }

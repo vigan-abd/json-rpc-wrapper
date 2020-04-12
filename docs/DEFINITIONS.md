@@ -205,6 +205,7 @@ transport protocols as json rpc services.
 
 ### *rpcServiceBase.methods*
 **Kind**: instance property of [<code>RpcServiceBase</code>](#RpcServiceBase)  
+**Access**: protected  
 **Properties**
 
 | Name | Type | Description |
@@ -253,10 +254,6 @@ The abstract that will verify if the provided params for the method are valid,
 it should be implemented in all extended classes
 
 **Kind**: instance abstract method of [<code>RpcServiceBase</code>](#RpcServiceBase)  
-**Throws**:
-
-- [<code>RpcError</code>](#RpcError) 
-
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -279,8 +276,8 @@ of object! This instance will act as a proxy to the wrapped object, and can call
     * [.service](#RpcWrapper+service)
     * [.proxy](#RpcWrapper+proxy)
     * [.cbMethods](#RpcWrapper+cbMethods)
-    * [.callReq(payload)](#RpcWrapper+callReq) ⇒ [<code>JsonRpcResponse</code>](#JsonRpcResponse) \| [<code>Array.&lt;JsonRpcResponse&gt;</code>](#JsonRpcResponse) \| <code>void</code>
-    * [._procReq(req)](#RpcWrapper+_procReq) ⇒ [<code>JsonRpcResponse</code>](#JsonRpcResponse) \| <code>void</code>
+    * [.callReq(payload)](#RpcWrapper+callReq) ⇒ <code>Promise.&lt;(JsonRpcResponse\|Array.&lt;JsonRpcResponse&gt;\|void)&gt;</code>
+    * [._procReq(req)](#RpcWrapper+_procReq) ⇒ <code>Promise.&lt;(JsonRpcResponse\|void)&gt;</code>
     * [._createRes([id], [err], [res])](#RpcWrapper+_createRes) ⇒ [<code>JsonRpcResponse</code>](#JsonRpcResponse)
     * [._execFunc(func, params)](#RpcWrapper+_execFunc) ⇒ <code>any</code>
 
@@ -361,12 +358,12 @@ Methods of the object that uses callbacks
 
 <a name="RpcWrapper+callReq"></a>
 
-### rpcWrapper.callReq(payload) ⇒ [<code>JsonRpcResponse</code>](#JsonRpcResponse) \| [<code>Array.&lt;JsonRpcResponse&gt;</code>](#JsonRpcResponse) \| <code>void</code>
+### rpcWrapper.callReq(payload) ⇒ <code>Promise.&lt;(JsonRpcResponse\|Array.&lt;JsonRpcResponse&gt;\|void)&gt;</code>
 This method invokes the json rpc requests against the wrapped object/instance.
 The response can be an array, single item or void depending on request.
 
 **Kind**: instance method of [<code>RpcWrapper</code>](#RpcWrapper)  
-**Returns**: [<code>JsonRpcResponse</code>](#JsonRpcResponse) \| [<code>Array.&lt;JsonRpcResponse&gt;</code>](#JsonRpcResponse) \| <code>void</code> - e.g. {"jsonrpc": "2.0", "result": 7, "id": "1"}  
+**Returns**: <code>Promise.&lt;(JsonRpcResponse\|Array.&lt;JsonRpcResponse&gt;\|void)&gt;</code> - e.g. {"jsonrpc": "2.0", "result": 7, "id": "1"}  
 **Access**: public  
 
 | Param | Type | Description |
@@ -375,12 +372,12 @@ The response can be an array, single item or void depending on request.
 
 <a name="RpcWrapper+_procReq"></a>
 
-### rpcWrapper.\_procReq(req) ⇒ [<code>JsonRpcResponse</code>](#JsonRpcResponse) \| <code>void</code>
+### rpcWrapper.\_procReq(req) ⇒ <code>Promise.&lt;(JsonRpcResponse\|void)&gt;</code>
 Validates the received request and invokes the method on proxied object,
 and in case of id param returns the response.
 
 **Kind**: instance method of [<code>RpcWrapper</code>](#RpcWrapper)  
-**Returns**: [<code>JsonRpcResponse</code>](#JsonRpcResponse) \| <code>void</code> - e.g. {"jsonrpc": "2.0", "result": 7, "id": "1"}  
+**Returns**: <code>Promise.&lt;(JsonRpcResponse\|void)&gt;</code> - e.g. {"jsonrpc": "2.0", "result": 7, "id": "1"}  
 **Access**: protected  
 
 | Param | Type | Description |

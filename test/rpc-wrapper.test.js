@@ -5,9 +5,9 @@ const { expect } = require('chai')
   .use(require('dirty-chai'))
 const dns = require('dns')
 
-const RpcError = require('../src/rpc-error')
-const RpcServiceBase = require('../src/rpc-service-base')
-const RpcWrapper = require('../src/rpc-wrapper')
+const { RpcError } = require('../src/rpc-error')
+const { RpcServiceBase } = require('../src/rpc-service-base')
+const { RpcWrapper } = require('../src/rpc-wrapper')
 
 module.exports = () => {
   describe('# rpc-wrapper-tests', () => {

@@ -3,7 +3,7 @@
 const { expect } = require('chai')
   .use(require('dirty-chai'))
 
-const RpcError = require('../src/rpc-error')
+const { RpcError } = require('../src/rpc-error')
 
 module.exports = () => {
   describe('# rpc-error-tests', () => {
