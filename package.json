@@ -3,6 +3,7 @@
   "version": "0.9.0",
   "description": "A simple json rpc 2.0 wrapper for any object",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "docs": "rm ./docs/DEFINITIONS.md && node_modules/.bin/jsdoc2md --no-cache --files  ./src/*.js ./src/**/*.js >> docs/DEFINITIONS.md",
     "format": "./node_modules/.bin/standard --fix",

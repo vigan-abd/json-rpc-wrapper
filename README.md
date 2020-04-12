@@ -174,6 +174,59 @@ server.listen(8080, () => {
 
 ```
 
+### Typescript usage
+
+The library can also be used directly into typescript without needing to install types package separately, all declaration files can be found in @types folder. Usage example:
+```typescript
+import http = require('http')
+import { RpcWrapper, RpcServiceBase } from 'json-rpc-wrapper';
+
+interface Product { id: number; name: string; }
+
+class ProductService extends RpcServiceBase {
+  protected products: Array<Product>
+  constructor(products: Array<Product> = []) {
+    super()
+
+    this.methods.push('create')
+    this.products = products
+  }
+
+  create(item: Product) { this.products.push(item) }
+  areParamsValid(method: string, params: any) {
+    switch (method) {
+      case 'create':
+        if (!params.id || typeof params.id !== 'number') return false
+        if (!params.name || typeof params.name !== 'string') return false
+        return true
+      default: return false
+    }
+  }
+}
+
+const myService = new ProductService([{ id: 1, name: 'Product 1' }])
+const rpcProxy = new RpcWrapper(myService)
+
+const server = http.createServer((req, res) => {
+  const chunks: Array<string> = []
+  req.on('data', (data) => {
+    chunks.push(data.toString('utf-8'))
+  })
+
+  req.on('end', async () => {
+    const payload = chunks.join('')
+    const rpcRes = await rpcProxy.callReq(payload)
+    res.write(JSON.stringify(rpcRes))
+    res.end()
+  })
+})
+
+server.listen(8080, () => {
+  console.log(`HTTP server is listening on ::8080`)
+})
+
+```
+
 Additional detailed examples can be found in [examples folder](./examples).
 
 Also full documentation related classes can be found in [docs/DEFINITIONS.md](./docs/DEFINITIONS.md)
