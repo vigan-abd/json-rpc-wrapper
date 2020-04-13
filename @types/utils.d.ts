@@ -3,12 +3,14 @@
  * in case of number NaN and Infinity values are not considered numbers.
  * It returns true in case of it represents one of these two types
  * @param {any} val - Value that will be checked
+ * @returns {boolean}
  */
 export function isStringOrNumber(val: any): boolean
 
 /**
  * Determines if the value is null or undefined, returns true in case of it represents one of these two types
  * @param {any} val - Value that will be checked
+ * @returns {boolean}
  */
 export function isNil(val: any): boolean
 
@@ -24,5 +26,6 @@ export function isNil(val: any): boolean
  *    - propertyIsEnumerable
  * Methods toLocaleString, toString, valueOf are included
  * @param {Object} toCheck - The object from which the function names will be extracted
+ * @returns {Array<string>}
  */
 export function getObjectFunctions(toCheck: object): Array<string>

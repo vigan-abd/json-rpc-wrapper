@@ -30,46 +30,49 @@ export class RpcWrapper {
    * The object that will be proxied
    */
   protected proxy: Object
+
   /**
    * Methods of the object that uses callbacks
    */
   protected cbMethods: Array<string>
+
   /**
    * This method invokes the json rpc requests against the wrapped object/instance.
    * The response can be an array, single item or void depending on request.
    * @public
    * @param {string} payload - JSON payload that is received through transport layer,
    *    e.g. {"jsonrpc": "2.0", "method": "sum", "params": [1,2,4], "id": "1"}
-   * @returns {JsonRpcResponse|Array<JsonRpcResponse>|void} e.g. {"jsonrpc": "2.0", "result": 7, "id": "1"}
+   * @returns {Promise<JsonRpcResponse|Array<JsonRpcResponse>|void>} e.g. {"jsonrpc": "2.0", "result": 7, "id": "1"}
    */
-  public callReq(payload: string): Promise<Array<JsonRpcRequest> | JsonRpcRequest | void>
+  public callReq(payload: string): Promise<JsonRpcResponse | Array<JsonRpcResponse> | void>
 
   /**
    * Validates the received request and invokes the method on proxied object,
    * and in case of id param returns the response.
-   * @protected
    * @param {JsonRpcRequest} req - Request object received through the proxy call
-   * @returns {JsonRpcResponse|void} e.g. {"jsonrpc": "2.0", "result": 7, "id": "1"}
+   * @returns {Promise<JsonRpcResponse|void>} e.g. {"jsonrpc": "2.0", "result": 7, "id": "1"}
    */
-  protected _procReq(req: JsonRpcRequest): Promise<JsonRpcRequest | void>
+  protected _procReq(req: JsonRpcRequest): Promise<JsonRpcResponse | void>
 
   /**
    * Crafts the json rpc response based on input
    * @param {string|number} [id] - Optional request id
    * @param {RpcError} [err] - Optional error object
    * @param {any} [res] - Optional response object, ignored in case when err is present
+   * @returns {JsonRpcResponse}
    */
   protected _createRes(id?: string | number | null, err?: RpcError | null, res?: any): JsonRpcResponse
 
   /**
    * Calls the function inside the proxied object with specified arguments
-   * @protected
    * @param {Function} func - The function of the proxied object that will be invoked
    * @param {any} params - The params that will be passed, in case if rpc request is array
    *    params are passed in order, otherwise single object is passed
+   * @returns {any}
    */
   protected _execFunc(func: Function, params: any): any
 }
+
 export interface JsonRpcRequest {
   jsonrpc: '2.0'
   method: string
