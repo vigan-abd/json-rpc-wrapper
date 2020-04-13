@@ -1,3 +1,6 @@
+# 1.0.1
+- fixes: fixed typescript definitions
+
 # 1.0.0
 - features: typescript support added
 - docs: updated response types in rpc wrapper docs with correct ones, added typescript usage example, added typescript definitions.
